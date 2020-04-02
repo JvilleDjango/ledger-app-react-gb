@@ -45,8 +45,6 @@ const BillDelete = props => {
   );
 };
 
-
-
 const mapStateToProps = (state, ownProps) => {
   return { bill: state.bills[ownProps.match.params.id] };
 };

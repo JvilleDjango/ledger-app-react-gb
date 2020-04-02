@@ -10,7 +10,8 @@
     "later": "^1.2.0",
     "moment": "^2.24.0",
     "node-fetch": "^2.6.0",
-    "node-later": "^1.0.16"
+    "node-later": "^1.0.16",
+    "twix": "^1.3.0"
   },
   "devDependencies": {},
   "scripts": {

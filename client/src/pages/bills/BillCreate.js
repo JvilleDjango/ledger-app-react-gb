@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { createBill } from "../../actions";
-import BillForm from "./billForm";
+import BillForm from "../../components/form/billForm";
 
 import { Container, Typography} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";

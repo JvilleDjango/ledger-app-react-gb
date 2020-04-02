@@ -1,22 +1,21 @@
-import React, { useState, useEffect} from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-import history from "../history";
-import { fetchBill, deleteBill } from "../actions";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { fetchBill, deleteBill } from "../../actions";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const BillModal = ({bill, open, handleClose}) => {
-
+const BillModal = ({ bill, open, handleClose, fetchBill, deleteBill }) => {
   // useEffect(() => {
-  //   props.fetchBill(props.match.params.id);
+  //   fetchBill(bill.id);
   // }, []);
 
   return (
@@ -37,15 +36,15 @@ const BillModal = ({bill, open, handleClose}) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Disagree
+            Cancel
           </Button>
-          <Button  onClick={() => deleteBill(bill.id)} color="primary">
-            Agree
+          <Button onClick={() => deleteBill(bill.id)} color="primary">
+            Delete
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
-}
+};
 
-export default BillModal;
+export default connect(null, { fetchBill, deleteBill })(BillModal);

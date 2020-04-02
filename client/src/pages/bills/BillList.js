@@ -3,11 +3,10 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import { createNumberMask } from "redux-form-input-masks";
-import BillModal from "../BillModal";
+import BillModal from "../../components/modal/BillModal";
 import history from "../../history";
 import { fetchBills } from "../../actions";
 import BillCreate from "./BillCreate";
-
 
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -24,7 +23,7 @@ import Paper from "@material-ui/core/Paper";
 import { Typography, Button, Container, Box } from "@material-ui/core";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import Drawer from "@material-ui/core/Drawer";
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from "@material-ui/core/Tooltip";
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -53,7 +52,7 @@ const useStyles = makeStyles({
     justifyContent: "space-between"
   },
   container: {
-    maxHeight: 600,
+    maxHeight: 600
   }
 });
 
@@ -79,7 +78,6 @@ const BillList = props => {
 
     setState({ ...state, [side]: open });
   };
-
 
   //modal
   const [open, setOpen] = useState(false);
@@ -116,43 +114,31 @@ const BillList = props => {
           </StyledTableCell>
           <StyledTableCell align="right">{row.description}</StyledTableCell>
           <StyledTableCell align="right">
-            <Moment format="MM-DD-YYYY">{row.dueDay}</Moment>
+            <Moment format="Do">{row.dueDay}</Moment>
           </StyledTableCell>
           <StyledTableCell align="right">${row.amountDue}</StyledTableCell>
           <StyledTableCell align="right">
-          <Tooltip title="Edit" arrow>
-            <IconButton
-              variant="contained"
-              color="primary"
-              to={`/bills/edit/${row.id}`}
-              component={Link}
-            >
-              <EditIcon />
-            </IconButton>
-            </Tooltip>
-            <Tooltip title="Delete" arrow>
-            <IconButton
-              aria-label="delete"
-              className={classes.margin}
-              to={`/bills/delete/${row.id}`}
-              component={Link}
-            >
-              <DeleteIcon />
-            </IconButton>
+            <Tooltip title="Edit" arrow>
+              <IconButton
+                variant="contained"
+                color="primary"
+                to={`/bills/edit/${row.id}`}
+                component={Link}
+              >
+                <EditIcon />
+              </IconButton>
             </Tooltip>
 
-            {/* TODO - Add Material UI's Modal so it can delete bill */}
-
-            {/* <IconButton
+            <IconButton
               aria-label="delete"
               className={classes.margin}
               onClick={() => {
                 handleClickOpen();
                 selectBill(row);
               }}
-            > 
+            >
               <DeleteIcon />
-            </IconButton> */}
+            </IconButton>
           </StyledTableCell>
         </StyledTableRow>
       );
@@ -161,22 +147,26 @@ const BillList = props => {
 
   return (
     <Container>
-      {/* <BillModal open={open} bill={selectedBill} handleClose={handleClose} /> */}
+      <BillModal open={open} bill={selectedBill} handleClose={handleClose} />
       <Box className={classes.header}>
         <Typography variant="h4">Bill List</Typography>
         <Tooltip title="Add a Bill" arrow placement="top">
-        <IconButton color="primary" onClick={toggleDrawer("bottom", true)}>
-          <AddCircleIcon fontSize="large" />
-        </IconButton>
+          <IconButton color="primary" onClick={toggleDrawer("bottom", true)}>
+            <AddCircleIcon fontSize="large" />
+          </IconButton>
         </Tooltip>
       </Box>
       <TableContainer component={Paper} className={classes.container}>
-        <Table className={classes.table} aria-label="customized table" stickyHeader >
+        <Table
+          className={classes.table}
+          aria-label="customized table"
+          stickyHeader
+        >
           <TableHead>
             <TableRow>
               <StyledTableCell>Company Name</StyledTableCell>
               <StyledTableCell align="right">Description</StyledTableCell>
-              <StyledTableCell align="right">Due Date</StyledTableCell>
+              <StyledTableCell align="right">Due Day</StyledTableCell>
               <StyledTableCell align="right">Amount</StyledTableCell>
               <StyledTableCell align="right">Actions</StyledTableCell>
             </TableRow>

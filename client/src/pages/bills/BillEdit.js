@@ -2,7 +2,7 @@ import _ from "lodash";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { fetchBill, editBill } from "../../actions";
-import BillForm from "./billForm";
+import BillForm from "../../components/form/billForm";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -16,6 +16,8 @@ const useStyles = makeStyles(theme => ({
 const BillEdit = props => {
   const classes = useStyles();
 
+  console.log(props.bill)
+
   const onSubmit = formValues => {
     props.editBill(props.match.params.id, formValues);
   };
@@ -25,6 +27,7 @@ const BillEdit = props => {
   }, []);
 
   const buttonName = "Update";
+
 
   return (
     <div>

@@ -36,7 +36,7 @@ async function fetchPaydays() {
     }
   });
 
-  // Grouping objects
+  //Grouping objects
   function groupBy(objectArray, property) {
     return objectArray.reduce((acc, obj) => {
       const key = obj[property];

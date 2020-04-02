@@ -30,7 +30,7 @@ const Header = () => {
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
          <Typography variant="h6" className={classes.title}>
-          LE-JER BOX
+          [BREAD BOX]
         </Typography>
         {/* // <Button color="inherit" component={Link} to="/">
         //   Ledger

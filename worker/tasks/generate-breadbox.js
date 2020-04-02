@@ -1,85 +1,74 @@
 const axios = require("axios");
+const moment = require("moment");
 
 async function generateBreadBox() {
   const payranges = [];
   const bills = [];
   const breadbox = [];
 
-  let pr = await axios.get("http://localhost:3001/payranges");
-  let data = pr.data;
+  let _pay_ranges = await axios.get("http://localhost:3001/payranges");
+  let data = _pay_ranges.data;
   data.forEach(e => {
     // console.log(e);
     payranges.push(e);
   });
 
-  let b = await axios.get("http://localhost:3001/bills");
-  let data2 = b.data;
+  let _bills = await axios.get("http://localhost:3001/bills");
+  let data2 = _bills.data;
   data2.forEach(e => {
     // console.log(e);
     bills.push(e);
   });
 
   payranges.map(range => {
-    Object.keys(range).map((rg, idx) => {
-      //  console.log(range[rg].startDate.date)
-      let startDate = range[rg].startDate.date;
-      let endDate = range[rg].endDate.date;
+    Object.keys(range).map(rg => {
+      let startDate = range[rg].startDate;
+      let endDate = range[rg].endDate;
 
-      let sDate = new Date(startDate);
-      let eDate = new Date(endDate)
-
-      let min = sDate.getDate();
-      let max = eDate.getDate();
-
-      console.log(startDate)
+      let sDate = moment(startDate).format("YYYY-MM-DD");
+      let eDate = moment(endDate).format("YYYY-MM-DD");
 
       bills.map((bill, i) => {
-        let d = new Date(bill.dueDay);
-        let day = d.getDate();
+        for (let i = 0; i < 12; i++) {
+          let day = moment(bill.dueDay)
+            .month(i)
+            .format("YYYY-MM-DD");
 
-        if (day >= min && day <= max) {
-
-          breadbox.push({
-            id: i,
-            startDate: startDate,
-            endDate: endDate,
-            bill: bill
-          })
-          
+          if (day >= sDate && day <= eDate) {
+            breadbox.push({
+              id: i,
+              startDate: startDate,
+              endDate: endDate,
+              bill: bill
+            });
+          }
         }
       });
-
-  
     });
   });
 
-  // console.log(breadbox)
-
-    // Grouping objects
-    function groupBy(objectArray, property) {
-      return objectArray.reduce((acc, obj) => {
-        const key = obj[property];
-        if (!acc[key]) {
-          acc[key] = [];
-        }
-        // Add object to list for given key's value
-        acc[key].push(obj);
-        return acc;
-      }, {});
-    }
-
-  const _breadbox = groupBy(breadbox, "startDate");
-
-   console.log(_breadbox);
-
-    axios
-    .post("http://localhost:3001/breadbox", _breadbox)
-    .then(resp => {
-      console.log(resp.data);
-    })
-    .catch(error => {
-      console.log(error);
+  const update = data => {
+    const res = {};
+    data.forEach(item => {
+      if (!res[item.startDate]) {
+        res[item.startDate] = { ...item, bill: [] };
+      }
+      res[item.startDate].bill.push(item.bill);
     });
+    return Object.values(res);
+  };
+
+
+  const combined_bills = update(breadbox);
+
+  axios
+  .post("http://localhost:3001/breadbox", combined_bills)
+  .then(resp => {
+    console.log(resp.data);
+  })
+  .catch(error => {
+    console.log(error);
+  });
 }
 
 generateBreadBox();
