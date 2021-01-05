@@ -7,7 +7,7 @@
     "@material-ui/core": "^4.9.5",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/pickers": "^3.2.10",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "firebase": "^7.13.1",
     "later": "^1.2.0",
     "lodash": "^4.17.15",
